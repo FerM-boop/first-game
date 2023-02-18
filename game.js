@@ -1,26 +1,38 @@
-//Phaser games are composed of scenes. This game only needs one scene:
 class mainScene {
-    // The three methods currently empty
-  
     preload() {
-      // This method is called once at the beginning
-      // It will load all the assets, like sprites and sounds  
+      this.load.image('player', 'assets/player.png');
+      this.load.image('croissant', 'assets/croissant.png');
     }
     create() {
-      // This method is called once, just after preload()
-      // It will initialize our scene, like the positions of the sprites
+      this.player = this.physics.add.sprite(100, 100, 'player');
+      this.player.setDisplaySize(50,50)
+      this.croissant = this.physics.add.sprite(300, 300, 'croissant');
+      this.croissant.setDisplaySize(35,35)
+      this.score = 0;
+      let style = { font: '20px Arial', fill: '#fff' };
+      this.scoreText = this.add.text(20, 20, 'score: ' + this.score, style);
+      this.arrow = this.input.keyboard.createCursorKeys();
     }
     update() {
-      // This method is called 60 times per second after create() 
-      // It will handle all the game's logic, like movements
+      if (this.arrow.right.isDown) {
+      this.player.x += 3;
+      } else if (this.arrow.left.isDown) {
+      this.player.x -= 3;
+      } 
+
+      if (this.arrow.down.isDown) {
+      this.player.y += 3;
+      } else if (this.arrow.up.isDown) {
+      this.player.y -= 3;
+      } 
     }
   }
 
   new Phaser.Game({
-    width: 700, // Width of the game in pixels
-    height: 400, // Height of the game in pixels
-    backgroundColor: '#3498db', // The background color (blue)
-    scene: mainScene, // The name of the scene we created
-    physics: { default: 'arcade' }, // The physics engine to use
-    parent: 'game', // Create the game inside the <div id="game"> 
+    width: 700, 
+    height: 400, 
+    backgroundColor: '#3498db', 
+    scene: mainScene, 
+    physics: { default: 'arcade' }, 
+    parent: 'game', 
   });
