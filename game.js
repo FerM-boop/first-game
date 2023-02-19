@@ -3,6 +3,14 @@ class mainScene {
       this.load.image('player', 'assets/player.png');
       this.load.image('croissant', 'assets/croissant.png');
     }
+    hit() {
+      var audio = new Audio("./assets/soundfx/croissant_sound.mp3");
+      audio.play();
+      this.croissant.x = Phaser.Math.Between(100, 600);
+      this.croissant.y = Phaser.Math.Between(100, 300);
+      this.score += 10;
+      this.scoreText.setText('score: ' + this.score);
+    }
     create() {
       this.player = this.physics.add.sprite(100, 100, 'player');
       this.player.setDisplaySize(50,50)
@@ -30,15 +38,7 @@ class mainScene {
         this.hit();
       }
     }
-    hit() {
-      var audio = new Audio("./assets/soundfx/croissant_sound.mp3");
-      audio.play();
-      this.croissant.x = Phaser.Math.Between(100, 600);
-      this.croissant.y = Phaser.Math.Between(100, 300);
-      this.score += 10;
-      this.scoreText.setText('score: ' + this.score);
-    }
-  }
+}
 
   new Phaser.Game({
     width: 700, 
