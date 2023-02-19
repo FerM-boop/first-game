@@ -24,7 +24,19 @@ class mainScene {
       this.player.y += 3;
       } else if (this.arrow.up.isDown) {
       this.player.y -= 3;
-      } 
+      }
+
+      if (this.physics.overlap(this.player, this.croissant)) {
+        this.hit();
+      }
+    }
+    hit() {
+      var audio = new Audio("./assets/soundfx/croissant_sound.mp3");
+      audio.play();
+      this.croissant.x = Phaser.Math.Between(100, 600);
+      this.croissant.y = Phaser.Math.Between(100, 300);
+      this.score += 10;
+      this.scoreText.setText('score: ' + this.score);
     }
   }
 
