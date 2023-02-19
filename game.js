@@ -32,25 +32,26 @@ class mainScene {
     
     this.croissant.x = Phaser.Math.Between(100, 600);
     this.croissant.y = Phaser.Math.Between(100, 300);
+
+    this.tweens.add({
+      targets: this.player, 
+      duration: 200, 
+      scaleX: 1.2,
+      scaleY: 1.2,
+      yoyo: true, 
+    });
   }
   
   create() {
     this.player = this.physics.add.sprite(100, 100, 'player');
-    this.player.setDisplaySize(50,50)
     
     this.croissant = this.physics.add.sprite(300, 300, 'croissant');
-    this.croissant.setDisplaySize(35,35)
 
     this.bomb1 = this.physics.add.sprite(Phaser.Math.Between(100, 600), Phaser.Math.Between(100, 300), 'bomb1');
-    this.bomb1.setDisplaySize(35,35)
     this.bomb2 = this.physics.add.sprite(Phaser.Math.Between(100, 600), Phaser.Math.Between(100, 300), 'bomb1');
-    this.bomb2.setDisplaySize(35,35)
     this.bomb3 = this.physics.add.sprite(Phaser.Math.Between(100, 600), Phaser.Math.Between(100, 300), 'bomb1');
-    this.bomb3.setDisplaySize(35,35)
     this.bomb4 = this.physics.add.sprite(Phaser.Math.Between(100, 600), Phaser.Math.Between(100, 300), 'bomb1');
-    this.bomb4.setDisplaySize(35,35)
     this.bomb5 = this.physics.add.sprite(Phaser.Math.Between(100, 600), Phaser.Math.Between(100, 300), 'bomb1');
-    this.bomb5.setDisplaySize(35,35)
     
     this.score = 0;
     this.started = false;
