@@ -2,10 +2,26 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles.css">
     <title>Snake Game</title>
+    ,<script scrc="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
   </head>
   <body>
     <h1>Snake Game</h1>
-    <canvas id="game" width='300' height="300"></canvas>
+    <script>
+      const COLUMNAS = 40
+      const FILAS = 30
+      const LADO = 20
+      const ANCHO_CANVAS = COLUMNAS*LADO
+      const ALTO_CANVAS = FILAS*LADO
+
+      function setup() {
+        createCanvas(ANCHO_CANVAS,  ALTO_CANVAS)
+      }
+
+      function draw() {
+        background("black")
+      }
+    </script>
   </body>
   </html>
