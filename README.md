@@ -6,3 +6,5 @@ I will be using Phaser, a JavaScript framework.
 Following this tutorial: https://www.lessmilk.com/phaser-game-tutorial/
 
 I already finished the tutorial, I will continue adding more stuff to practice, thinking of adding more games to the website itself too.
+
+I am now adding a snake game. Following this tutorial: https://www.youtube.com/watch?v=wgSjVMmkLC0&ab_channel=JeffAporta
