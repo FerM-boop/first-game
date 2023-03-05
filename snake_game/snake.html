@@ -8,12 +8,39 @@
   </head>
   <body>
     <h1>Snake Game</h1>
+    <canvas id="game"></canvas>
     <script>
-      const COLUMNAS = 40
-      const FILAS = 30
-      const LADO = 20
-      const ANCHO_CANVAS = COLUMNAS*LADO
-      const ALTO_CANVAS = FILAS*LADO
+      const canvas = document.getElementById("game");
+      const ctx = canvas.getContext("2d");
+      const tileSize = 10;
+      let snake = [];
+      let food = {};
+      let score = 0;
+      let direction = "right";
+
+      canvas.width = 400;
+      canvas.height = 400;
+
+      snake[0] = {x: 10, y:10};
+      snake[1] = {x: 9, y:10};
+      snake[2] = {x: 8, y:10};
+
+      generateFood();
+
+      setInterval(() => {
+        moveSnake();
+
+        checkCollisions();
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        drawSnake();
+
+        drawFood();
+
+        drawScore();
+      }, 100)
+
 
       function setup() {
         createCanvas(ANCHO_CANVAS,  ALTO_CANVAS)
