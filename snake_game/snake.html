@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="styles.css">
     <title>Snake Game</title>
-    ,<script scrc="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+    <script scrc="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
   </head>
   <body>
     <h1>Snake Game</h1>
-    <canvas id="game"></canvas>
+    <canvas id="canvas"></canvas>
     <script>
       //Addressing the canvas tag in html
-      const canvas = document.getElementById("game");
+      const canvas = document.getElementById("canvas");
       //giving the canvas a 2d context
       const ctx = canvas.getContext("2d");
       //setting the tile size for the game
@@ -22,6 +22,7 @@
       let food = {};
       let score = 0;
       let direction = "right";
+      let started = false;
 
       //setting game size
       canvas.width = 400;
@@ -37,34 +38,57 @@
 
       //game loop, calling the functions over and over again every 100 ms
       setInterval(() => {
-        moveSnake();
+        if(started){
+          moveSnake();
 
-        checkCollisions();
+          checkCollisions();
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        drawSnake();
+          drawSnake();
 
-        drawFood();
+          drawFood();
 
-        drawScore();
+          drawScore();
+        } else {
+          drawStartGame();
+          document.addEventListener("keydown", () => {
+            started = true
+          })
+        }
       }, 100);
 
       // Handle keyboard input
       document.addEventListener("keydown", (event) => {
         switch(event.keyCode) {
           case 37:
-            direction = "left";
-            break;
+            if(direction === "right"){
+              break;
+            } else {
+              direction = "left";
+              break;
+            }
           case 38:
-            direction = "up";
-            break;
+            if(direction === "down"){
+              break;
+            } else {
+              direction = "up";
+              break;
+            }
           case 39:
-            direction = "right";
-            break;
+            if(direction === "left"){
+              break;
+            } else {
+              direction = "right";
+              break;
+            }
           case 40:
-            direction = "down";
-            break;
+            if(direction === "up"){
+              break;
+            } else {
+              direction = "down";
+              break;
+            }
         }
       });
 
@@ -90,7 +114,7 @@
             snake[0].x += 1;
             break;
           case "down":
-            snake[0].y -= 1;
+            snake[0].y += 1;
             break;
         }
       }
@@ -119,6 +143,7 @@
         }
       }
 
+      //draws snake by checking x and y coordinates of snake and filling them
       function drawSnake() {
         ctx.fillStyle = "green";
         for( let i = 0; i < snake.length; i++) {
@@ -126,27 +151,38 @@
         }
       }
 
+      //draws food by checking x and y coordinates of snake and filling them
       function drawFood() {
         ctx.fillStyle = "red";
         ctx.fillRect(food.x * tileSize, food.y * tileSize, tileSize, tileSize);
       }
-
+      
+      //draws score on bottom left of the game
       function drawScore() {
         ctx.fillStyle = "black";
         ctx.font = "20px Arial";
-        ctx.fillText("Score: ${score}", 10, caanvas.height - 10);
+        ctx.fillText(`Score: ${score}`, 10, canvas.height - 10);
       }
 
+      //generates food in a random place of the gmae
       function generateFood() {
         food.x = Math.floor(Math.random() * (canvas.width/tileSize));
-        food.y = Math.floor(Math.random() * (canvaas.height / tileSize));
+        food.y = Math.floor(Math.random() * (canvas.height / tileSize));
       }
 
+      //game over
       function gameOver() {
-       alert("Game Over! Your score is ${score}.");
+       alert(`Game Over! Your score is ${score}.`);
        location.reload(); 
       }
-      
+
+      //"Press any key to start" 
+      function drawStartGame() {
+        ctx.fillStyle = "black";
+        ctx.font = "15px Arial";
+        ctx.fillText(`Press any key to start`, canvas.width/2-100 , canvas.height/2 );
+      }
+
     </script>
   </body>
   </html>
