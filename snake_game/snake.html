@@ -95,6 +95,9 @@
         }
       }
 
+      //this function compares x and y coordinates of the snake with other things.
+      //collissions with walls and itself will call for gameover.
+      //food collissions will up the score, generate more food and make the snake longer.
       function checkCollisions() {
         //walls
         if(snake[0].x < 0 || snake[0].x >= canvas.width / tileSize || snake[0].y < 0 || snake[0].y >= canvas.height / tileSize) {
@@ -116,13 +119,34 @@
         }
       }
 
-      function setup() {
-        createCanvas(ANCHO_CANVAS,  ALTO_CANVAS)
+      function drawSnake() {
+        ctx.fillStyle = "green";
+        for( let i = 0; i < snake.length; i++) {
+          ctx.fillRect(snake[i].x * tileSize, snake[i].y * tileSize, tileSize, tileSize);
+        }
       }
 
-      function draw() {
-        background("black")
+      function drawFood() {
+        ctx.fillStyle = "red";
+        ctx.fillRect(food.x * tileSize, food.y * tileSize, tileSize, tileSize);
       }
+
+      function drawScore() {
+        ctx.fillStyle = "black";
+        ctx.font = "20px Arial";
+        ctx.fillText("Score: ${score}", 10, caanvas.height - 10);
+      }
+
+      function generateFood() {
+        food.x = Math.floor(Math.random() * (canvas.width/tileSize));
+        food.y = Math.floor(Math.random() * (canvaas.height / tileSize));
+      }
+
+      function gameOver() {
+       alert("Game Over! Your score is ${score}.");
+       location.reload(); 
+      }
+      
     </script>
   </body>
   </html>
