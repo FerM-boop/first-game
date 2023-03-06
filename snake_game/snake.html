@@ -10,23 +10,32 @@
     <h1>Snake Game</h1>
     <canvas id="game"></canvas>
     <script>
+      //Addressing the canvas tag in html
       const canvas = document.getElementById("game");
+      //giving the canvas a 2d context
       const ctx = canvas.getContext("2d");
+      //setting the tile size for the game
       const tileSize = 10;
+      //initializing snake (array), food (object), score (int), direction (str, starting on right)
+      //all of them are written out with a let because they will be changing throughout the gameplay
       let snake = [];
       let food = {};
       let score = 0;
       let direction = "right";
 
+      //setting game size
       canvas.width = 400;
       canvas.height = 400;
 
+      //creating snake body
       snake[0] = {x: 10, y:10};
       snake[1] = {x: 9, y:10};
       snake[2] = {x: 8, y:10};
 
+      //calling food func for the first food
       generateFood();
 
+      //game loop, calling the functions over and over again every 100 ms
       setInterval(() => {
         moveSnake();
 
@@ -39,8 +48,25 @@
         drawFood();
 
         drawScore();
-      }, 100)
+      }, 100);
 
+      // Handle keyboard input
+      document.addEventListener("keydown", (event) => {
+        switch(event.keyCode) {
+          case 37:
+            direction = "left";
+            break;
+          case 38:
+            direction = "up";
+            break;
+          case 39:
+            direction = "right";
+            break;
+          case 40:
+            direction = "down";
+            break;
+        }
+      });
 
       function setup() {
         createCanvas(ANCHO_CANVAS,  ALTO_CANVAS)
