@@ -27,7 +27,7 @@
       canvas.width = 400;
       canvas.height = 400;
 
-      //creating snake body
+      //creating snake body, objects with x and y coordinates stored in arrray
       snake[0] = {x: 10, y:10};
       snake[1] = {x: 9, y:10};
       snake[2] = {x: 8, y:10};
@@ -67,6 +67,54 @@
             break;
         }
       });
+
+      //snake movement is simple, all of the body simply follows the piece in front.
+      //the head is the responsible for the real movement.
+      function moveSnake() {
+        //for loop starts from the tail of the snake and on, simply following the part of the snake in front
+        for(let i = snake.length - 1; i > 0; i--) {
+          snake[i].x = snake[i - 1].x;
+          snake[i].y = snake[i - 1].y;
+        }
+      
+
+        //head movement
+        switch(direction) {
+          case "left":
+            snake[0].x -= 1;
+            break;
+          case "up":
+            snake[0].y -= 1;
+            break;
+          case "right":
+            snake[0].x += 1;
+            break;
+          case "down":
+            snake[0].y -= 1;
+            break;
+        }
+      }
+
+      function checkCollisions() {
+        //walls
+        if(snake[0].x < 0 || snake[0].x >= canvas.width / tileSize || snake[0].y < 0 || snake[0].y >= canvas.height / tileSize) {
+          gameOver();
+        } 
+
+        //food
+        if(snake[0].x === food.x && snake[0].y === food.y) {
+          score++;
+          generateFood();
+          snake.push({x: snake[snake.length - 1].x, y: snake[snake.length  - 1].y});
+        }
+
+        //itself
+        for(let i = 1; i < snake.length; i++) {
+          if(snake[0].x === snake[i].x && snake[0].y === snake[i].y) {
+            gameOver();
+          }
+        }
+      }
 
       function setup() {
         createCanvas(ANCHO_CANVAS,  ALTO_CANVAS)
