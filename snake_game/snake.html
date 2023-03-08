@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="styles.css">
     <title>Snake Game</title>
-    <script scrc="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
   </head>
   <body>
     <h1>Snake Game</h1>
@@ -23,6 +22,7 @@
       let score = 0;
       let direction = "right";
       let started = false;
+      let endScreen = false;
 
       //setting game size
       canvas.width = 400;
@@ -38,23 +38,21 @@
 
       //game loop, calling the functions over and over again every 100 ms
       setInterval(() => {
-        if(started){
-          moveSnake();
+       if (!started) {
+         drawStartGame();
+         return;
+        }
 
-          checkCollisions();
+        moveSnake();
+        checkCollisions();
 
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawSnake();
+        drawFood();
+        drawScore();
 
-          drawSnake();
-
-          drawFood();
-
-          drawScore();
-        } else {
-          drawStartGame();
-          document.addEventListener("keydown", () => {
-            started = true
-          })
+       if (endScreen) {
+         gameOver();
         }
       }, 100);
 
@@ -164,7 +162,7 @@
         ctx.fillText(`Score: ${score}`, 10, canvas.height - 10);
       }
 
-      //generates food in a random place of the gmae
+      //generates food in a random place of the game
       function generateFood() {
         food.x = Math.floor(Math.random() * (canvas.width/tileSize));
         food.y = Math.floor(Math.random() * (canvas.height / tileSize));
@@ -172,15 +170,27 @@
 
       //game over
       function gameOver() {
-       alert(`Game Over! Your score is ${score}.`);
-       location.reload(); 
+        endScreen = true;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.font = "30px Arial";
+        ctx.fillStyle = "red";
+        ctx.textAlign = "center";
+        ctx.fillText(`Game Over! Your score is ${score}`, canvas.width/2, canvas.height/2);
+        ctx.font = "15px Arial";
+        ctx.fillText(`(press any key to restart)`, canvas.width/2, canvas.height/2+20);
+        document.addEventListener("keydown", () => {
+          document.location.reload();
+        })
       }
 
       //"Press any key to start" 
       function drawStartGame() {
         ctx.fillStyle = "black";
-        ctx.font = "15px Arial";
+        ctx.font = "20px Arial";
         ctx.fillText(`Press any key to start`, canvas.width/2-100 , canvas.height/2 );
+        document.addEventListener("keydown", () => {
+          started = true;
+        })
       }
 
     </script>
