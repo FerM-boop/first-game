@@ -1,4 +1,7 @@
 class mainScene {
+  constructor() {
+    this.score = 0;
+  }
   preload() {
     this.load.image('player', 'assets/player.png');
 
@@ -17,7 +20,8 @@ class mainScene {
       var audio = new Audio("./assets/soundfx/explosion.mp3");
       audio.play();
       bombnum.destroy(true);
-      setTimeout(function(){alert("Game Over!"); location.reload()},50)
+      this.gameover = true;
+      //setTimeout(function(){alert("Game Over!"); location.reload()},50)
     }
   }
 
@@ -27,6 +31,7 @@ class mainScene {
     
     if (this.started) {
       this.score += 10;
+      this.registry.set('score', this.score);
       this.scoreText.setText('score: ' + this.score);
     }
     
@@ -43,6 +48,21 @@ class mainScene {
   }
   
   create() {
+    //game over scene
+    this.scene.add('gameOverScene', {
+      backgroundColor: '#000000',
+      score: this.score,
+      create: function () {
+        let score = this.registry.get('score');
+        if (score === undefined) {
+          score = "0";
+        }
+        this.add.text(350,180, 'Game Over! Your score is ' + score
+        , { fontSize: '32px', fill: "red", fontFamily: "Arial"}).setOrigin(0.5);
+        this.add.text(350,210, '(press any key to restart)', { fontSize: '16px', fill: "red", fontFamily: "Arial"}).setOrigin(0.5);
+      }
+    }, false);
+
     this.player = this.physics.add.sprite(100, 100, 'player');
     
     this.croissant = this.physics.add.sprite(300, 300, 'croissant');
@@ -52,9 +72,10 @@ class mainScene {
     this.bomb3 = this.physics.add.sprite(Phaser.Math.Between(100, 600), Phaser.Math.Between(100, 300), 'bomb1');
     this.bomb4 = this.physics.add.sprite(Phaser.Math.Between(100, 600), Phaser.Math.Between(100, 300), 'bomb1');
     this.bomb5 = this.physics.add.sprite(Phaser.Math.Between(100, 600), Phaser.Math.Between(100, 300), 'bomb1');
-    
-    this.score = 0;
+
     this.started = false;
+    this.gameover = false;
+    this.restart = false;
     
     let style = { font: '20px Arial', fill: '#fff' };
     this.scoreText = this.add.text(20, 20, 'score: ' + this.score, style);
@@ -62,6 +83,8 @@ class mainScene {
   }
   
   update() {
+    let gameOverMessage = "Game over! Your score is " + this.score;
+
     if (this.arrow.right.isDown) {
       this.player.x += 3;
     } else if (this.arrow.left.isDown) {
@@ -90,6 +113,14 @@ class mainScene {
       this.bomb(this.bomb5);
     }
 
+    if (this.gameover){
+      this.scene.stop();
+      this.scene.start('gameOverScene');
+      setTimeout(function(){
+        document.addEventListener("keydown", () => {
+          document.location.reload();
+        })},300)
+    }
   }
 }
 
@@ -97,7 +128,7 @@ new Phaser.Game({
   width: 700, 
   height: 400, 
   backgroundColor: '#3498db', 
-  scene: mainScene, 
+  scene: mainScene,
   physics: { default: 'arcade' }, 
   parent: 'game', 
 });
